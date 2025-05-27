@@ -136,7 +136,7 @@ fig.update_layout(
     xaxis1=dict(title="Index (0=X, 1–5=Xᵢ)", range=[-0.5, 5.5]),
     yaxis1=dict(title="Value", range=[lower, upper]),
     xaxis2=dict(title="Value", range=x_range),
-    yaxis2=dict(title="Count", range=[0, n_samples // 2]),
+    yaxis2=dict(title="Count", range=[0, n_samples // 5]),
     legend=dict(orientation="h", x=0.2, y=-0.35),
     updatemenus=[dict(
         type="buttons",
