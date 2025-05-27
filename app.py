@@ -164,7 +164,15 @@ fig.add_trace(go.Scatter(x=[], y=[], mode="lines", name="mean(Xᵢ)", line=dict(
 fig.add_trace(go.Scatter(x=[], y=[], mode="lines", name="E[X]", line=dict(color="red", width=2)), row=1, col=1)
 fig.add_trace(go.Bar(x=[], y=[], name=left_label, marker_color="blue", opacity=0.6), row=1, col=2)
 fig.add_trace(go.Bar(x=[], y=[], name=right_label, marker_color="green", opacity=0.6), row=1, col=2)
+fig.add_trace(go.Scatter(
+    x=[], y=[], mode="lines", line=dict(color="blue", width=1),
+    opacity=0.1, showlegend=False, xaxis="x1", yaxis="y1"
+), row=1, col=1)
 
+fig.add_trace(go.Scatter(
+    x=[], y=[], mode="lines", line=dict(color="orange", width=1),
+    opacity=0.1, showlegend=False, xaxis="x1", yaxis="y1"
+), row=1, col=1)
 
 
 # Precompute histogram to get max bin count
