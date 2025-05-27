@@ -18,6 +18,11 @@ mode = st.radio("Plot mode", ["Sum", "Mean"], index=0)
 n_samples = st.slider("Number of samples", 10, 500, 100, step=10)
 frame_delay = st.slider("Animation speed (ms per frame)", 10, 2000, 1500, step=100)
 confidence_slider = st.slider("Confidence level for range (e.g. 0.9999)", min_value=0.95, max_value=0.9999, value=0.99, step=1e-5, format="%.5f")
+trail_opacity = st.slider(
+    "Memory trail opacity for previous X and mean(Xᵢ)",
+    min_value=0.0, max_value=1.0,
+    value=0.1, step=0.05
+)
 
 # --- Distribution Setup ---
 rng = np.random.default_rng(seed=42)
@@ -87,6 +92,33 @@ for i in range(n_samples):
     mean_right = np.mean(right_hist)
     var_right = np.var(right_hist)
 
+
+        # Add memory trail lines
+    trail_lines = []
+
+    # Blue lines for previous X values
+    for prev_x in X_vals[:i]:
+        trail_lines.append(go.Scatter(
+            x=[-0.5, 5.5], y=[prev_x]*2,
+            mode="lines",
+            line=dict(color="blue", width=1),
+            opacity=trail_opacity,
+            showlegend=False,
+            xaxis="x1", yaxis="y1"
+        ))
+
+    # Orange lines for previous mean(Xᵢ) values
+    for prev_mean_xi in Xi_vals[:i].mean(axis=1):
+        trail_lines.append(go.Scatter(
+            x=[-0.5, 5.5], y=[prev_mean_xi]*2,
+            mode="lines",
+            line=dict(color="orange", width=1),
+            opacity=trail_opacity,
+            showlegend=False,
+            xaxis="x1", yaxis="y1"
+        ))
+
+
     frames.append(go.Frame(
         name=str(i + 1),
         data=[
@@ -104,7 +136,7 @@ for i in range(n_samples):
                    marker_color="blue", opacity=0.6, xaxis="x2", yaxis="y2"),
             go.Bar(x=bin_centers, y=counts_right, name=right_label,
                    marker_color="green", opacity=0.6, xaxis="x2", yaxis="y2"),
-        ],
+        ] + trail_lines,
         layout=go.Layout(
             annotations=[
                 dict(
